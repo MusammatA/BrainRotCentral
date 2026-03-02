@@ -5,6 +5,8 @@
   --surface-2: #f8f5ee;
   --ink: #1f2d2f;
   --ink-muted: #5b6b70;
+  --ink-on-dark: #f4f1ff;
+  --ink-on-dark-muted: #d6d0e8;
   --line: #b9c9c8;
   --brand: #e25f34;
   --brand-2: #4ea96a;
@@ -357,6 +359,7 @@ p.subtitle {
   border: 1px solid var(--line);
   border-radius: 6px;
   background: rgba(20, 15, 34, 0.7);
+  color: var(--ink-on-dark);
 }
 
 .gen-status-panel {
@@ -438,17 +441,22 @@ p.subtitle {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(20, 15, 34, 0.72);
+  color: var(--ink-on-dark);
 }
 
 .account-title {
   margin: 0 0 12px;
-  color: var(--ink);
+  color: var(--ink-on-dark);
   font-family: 'JetBrains Mono', monospace;
 }
 
 .account-row {
-  color: var(--ink-muted);
+  color: var(--ink-on-dark-muted);
   margin-bottom: 12px;
+}
+
+.account-row strong {
+  color: var(--ink-on-dark);
 }
 
 .account-message {
@@ -475,8 +483,12 @@ p.subtitle {
   border-radius: 6px;
   border: 1px solid var(--line);
   background: rgba(24, 20, 40, 0.94);
-  color: var(--ink);
+  color: var(--ink-on-dark);
   font-family: 'IBM Plex Mono', monospace;
+}
+
+.account-name-input::placeholder {
+  color: rgba(236, 230, 255, 0.78);
 }
 
 .account-upload-list {
@@ -504,7 +516,7 @@ p.subtitle {
 
 .account-upload-meta {
   flex: 1;
-  color: var(--ink-muted);
+  color: var(--ink-on-dark-muted);
   font-size: 0.85rem;
 }
 
@@ -535,13 +547,13 @@ p.subtitle {
 }
 
 .uploader-card-title {
-  color: var(--ink);
+  color: var(--ink-on-dark);
   font-weight: 700;
   font-size: 0.95rem;
 }
 
 .uploader-card-meta {
-  color: var(--ink-muted);
+  color: var(--ink-on-dark-muted);
   font-size: 0.8rem;
 }
 
@@ -567,7 +579,7 @@ p.subtitle {
 
 .uploader-preview-caption {
   padding: 8px;
-  color: var(--ink-muted);
+  color: var(--ink-on-dark-muted);
   font-size: 0.74rem;
   line-height: 1.3;
   max-height: 72px;
@@ -686,7 +698,7 @@ li:hover::after {
 }
 
 .community-controls label {
-  color: var(--ink-muted);
+  color: var(--ink-on-dark-muted);
   font-size: 0.8rem;
 }
 
