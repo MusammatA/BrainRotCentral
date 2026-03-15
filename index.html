@@ -622,7 +622,37 @@
            return out;
        }
 
+       function isAuthOnlyView(view) {
+           return ['upload', 'account', 'discover', 'communities'].includes(String(view || '').trim());
+       }
+
+       function isValidColumbiaEmail(email) {
+           const normalized = String(email || '').trim().toLowerCase();
+           return normalized.endsWith('@columbia.edu');
+       }
+
+       function getViewAccessMessage(view) {
+           const normalizedView = String(view || '').trim();
+           if (normalizedView === 'discover' && !isValidColumbiaEmail(CURRENT_USER_EMAIL)) {
+               return 'Please sign in with a valid Columbia email to access Find Users.';
+           }
+           if (!CURRENT_USER_ID && isAuthOnlyView(normalizedView)) {
+               return 'Please sign in to access this section.';
+           }
+           return '';
+       }
+
        function switchView(view) {
+           const accessMessage = getViewAccessMessage(view);
+           if (accessMessage) {
+               showLoginPrompt(accessMessage);
+               currentView = 'grid';
+               updateSideTabs();
+               updateTopControls();
+               renderCurrentView();
+               if (IS_PHONE_CLIENT) closeMobileNav();
+               return;
+           }
            currentView = view;
            updateSideTabs();
            updateTopControls();
@@ -1865,9 +1895,9 @@
        }
 
        function renderCurrentView(container = document.getElementById('content-view')) {
-           const authOnlyViews = new Set(['upload', 'account', 'communities']);
-           if (!CURRENT_USER_ID && authOnlyViews.has(currentView)) {
-               showLoginPrompt('Please sign in to access this section.');
+           const accessMessage = getViewAccessMessage(currentView);
+           if (accessMessage) {
+               showLoginPrompt(accessMessage);
                currentView = 'grid';
                updateSideTabs();
                updateTopControls();
