@@ -736,7 +736,7 @@
 
        async function fetchDiscoverDirectory(term = '') {
            const safeTerm = encodeURIComponent(String(term || '').trim());
-           const resultLimit = String(term || '').trim() ? 36 : 24;
+           const resultLimit = String(term || '').trim() ? 18 : 12;
            const token = await getAccessToken();
            const res = await fetchWithTimeout(`/api/discover-uploaders?term=${safeTerm}&limit=${resultLimit}`, {
                headers: {

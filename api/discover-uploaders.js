@@ -101,7 +101,7 @@ async function resolveUploaderIdentity(supabase, userIds) {
     }
   }
 
-  const unresolved = ids.filter((id) => !emailById[id]).slice(0, 180);
+  const unresolved = ids.filter((id) => !emailById[id]).slice(0, 1000);
   for (const uid of unresolved) {
     try {
       const { data } = await supabase.auth.admin.getUserById(uid);
@@ -144,9 +144,9 @@ module.exports = async function handler(req, res) {
 
     const term = String(req.query?.term || '').trim().toLowerCase();
     const normalizedTerm = normalizeSearchText(term);
-    const limit = Math.max(12, Math.min(60, Number(req.query?.limit) || (term ? 36 : 24)));
-    const rowLimit = Math.max(1000, Math.min(12000, Number(req.query?.rowLimit) || 6000));
-    const pageSize = 500;
+    const limit = Math.max(8, Math.min(24, Number(req.query?.limit) || (term ? 18 : 12)));
+    const rowLimit = Math.max(2000, Math.min(50000, Number(req.query?.rowLimit) || (term ? 50000 : 25000)));
+    const pageSize = 1000;
     const maxPages = Math.ceil(rowLimit / pageSize);
 
     let captions = [];
