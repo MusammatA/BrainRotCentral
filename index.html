@@ -1138,19 +1138,16 @@
            return session.access_token;
        }
 
-       function buildAuditInsertFields(userId, isoTimestamp = new Date().toISOString()) {
+       function buildAuditInsertFields(userId) {
            return {
                created_by_user_id: userId,
-               modified_by_user_id: userId,
-               created_datetime_utc: isoTimestamp,
-               modified_datetime_utc: isoTimestamp
+               modified_by_user_id: userId
            };
        }
 
-       function buildAuditUpdateFields(userId, isoTimestamp = new Date().toISOString()) {
+       function buildAuditUpdateFields(userId) {
            return {
-               modified_by_user_id: userId,
-               modified_datetime_utc: isoTimestamp
+               modified_by_user_id: userId
            };
        }
 
@@ -2505,7 +2502,6 @@
 
            try {
                const client = getClient();
-               const now = new Date().toISOString();
               
                if (!voteStats[captionId]) voteStats[captionId] = { total: 0, myVote: 0 };
                const currentVoteValue = voteStats[captionId].myVote;
@@ -2556,7 +2552,7 @@
                        .from('caption_votes')
                        .update({
                            vote_value: nextVoteValue,
-                           ...buildAuditUpdateFields(CURRENT_USER_ID, now)
+                           ...buildAuditUpdateFields(CURRENT_USER_ID)
                        })
                        .eq('profile_id', CURRENT_USER_ID)
                        .eq('caption_id', captionId);
@@ -2568,7 +2564,7 @@
                            profile_id: CURRENT_USER_ID,
                            caption_id: captionId,
                            vote_value: nextVoteValue,
-                           ...buildAuditInsertFields(CURRENT_USER_ID, now)
+                           ...buildAuditInsertFields(CURRENT_USER_ID)
                        });
                    if (insertVoteError) throw insertVoteError;
                }

@@ -17,10 +17,9 @@ function deriveNameFromEmail(email) {
   return toTitleCase(local.replace(/[._-]+/g, ' ').trim() || email || 'Uploader');
 }
 
-function buildAuditUpdateFields(userId, isoTimestamp = new Date().toISOString()) {
+function buildAuditUpdateFields(userId) {
   return {
-    modified_by_user_id: userId,
-    modified_datetime_utc: isoTimestamp
+    modified_by_user_id: userId
   };
 }
 
