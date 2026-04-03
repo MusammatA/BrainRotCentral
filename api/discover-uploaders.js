@@ -1,8 +1,8 @@
 const { createClient } = require('@supabase/supabase-js');
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://secure.almostcrackd.ai';
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://secure.almostcrackd.ai';
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
+const ANON_KEY = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_KEY || '';
 
 function pickImageUrl(record = {}) {
   const candidates = [record.cdn_url, record.public_url, record.image_url, record.url];
@@ -126,7 +126,11 @@ module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
   if (!SERVICE_KEY) return res.status(500).json({ error: 'Missing SUPABASE_SERVICE_ROLE_KEY env var' });
-  if (!ANON_KEY) return res.status(500).json({ error: 'Missing SUPABASE_ANON_KEY env var' });
+  if (!ANON_KEY) {
+    return res.status(500).json({
+      error: 'Missing Supabase anon key env var. Set SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY.'
+    });
+  }
 
   const authHeader = String(req.headers.authorization || '');
   const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
